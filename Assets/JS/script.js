@@ -30,7 +30,7 @@ var cityList;
 var APIKey = "2c7d322923b0c930f658c4c4684eebcf";
 var city;
 var units = "&units=imperial";
-var unitsIcon = "°F";
+var mainTemp = "°F";
 
 document.onload = history();
 
@@ -46,6 +46,7 @@ fetch(queryURL)
 //user searches city name on form and presses search button
 search.addEventListener("search", async function(event){
     event.preventDefault();
+    display.innerHTML = "";
 
     //user's city search value is recorded and put in titlecase for consistency
 
@@ -64,9 +65,42 @@ search.addEventListener("search", async function(event){
     }
     history();
 
-    //display forcast for city searched
+    //set value for local storage
+    localStorage.setItem("cities", JSON.stringify(cityList));
 
-    display.innerHTML = "";
+    var cityLocation = await getCityLocation(city);
+    var cityLatitude = cityLocation[0];
+    var cityLongitude = cityLocation[1];
 
-})
+    var cityWeather = await getCityWeather(cityLongitude, cityLatitude);
 
+    forecastDisp(cityWeather);
+});
+
+//get history
+
+function history() {
+    cityHistory.innerHTML = "";
+    if (cityList !== undefined) {
+        for (i=0; i <cityList.length; i++){
+            var historyButton = document.createElement("button");
+            historyButton.setAttribute("value", cityList[i]);
+            historyButton.innerHTML = cityList[i];
+            cityHistory.appendChild(historyButton);
+        }
+    }
+};
+
+//forecast function
+
+function forecastDisp (data) {
+
+    //determine day and time of search request
+
+    var day = new Date(data.daily[0].dt * 1000).toLocaleDateString("en", {
+        weekday: "long",
+});
+
+    for (i = 0; i < 5; i++) {
+        
+    }
