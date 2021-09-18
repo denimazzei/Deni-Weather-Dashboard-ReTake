@@ -102,5 +102,92 @@ function forecastDisp (data) {
 });
 
     for (i = 0; i < 5; i++) {
-        
+        var week = documnet.createElement("ul");
+        week.classList.add("weekly-data", "forecast-window");
+
+        var day = new Date(data.daily[i].dt * 1000).toLocaleDateString("en", {
+            weekday: "long",
+    });
+
+    //create icons for temp, humidity, wind speed and UV index
+
+    var weekIcon = document.createElement("li");
+    var descIcon = document.createElement("li");
+    var tempIcon = document.createElement("li");
+    var dateIcon = document.createElement("li");
+    var humiidityIcon = document.createElement("li");
+    var windSpeedIcon = document.createElement("li");
+    var UVIcon = document.createElement("li");
+
+    weekIcon.innerHTML = "<https://openweathermap.org/img/wn/" + data.daily[i].weather[0].icon + "@2x.png></img>";
+    descIcon.innerHTML = "<span id='description'>" + data.daily[i].weather[0].description + "</span>";
+    tempIcon.innerHTML = "<span id='temp'>" + Math.trunc(data.daily[i].temp.max) + "<sup>" + unitsIcon + "</sup> -" + Math.trunc(data.daily[0].temp.min) + "<sup>" + unitsIcon + "</sup></span>"; //temperature
+    dateIcon.innerHTML = "<span id='day'>" + day + "</span>"; //date 
+    humiidityIcon.innerHTML = "Humidity: " + data.daily[i].humidity + "%";
+    windSpeedIcon.innerHTML = "Wind: " + data.daily[i].wind_speed + " mph"
+    UVIcon.innerHTML = "UV Index: <span id=uvi>" + data.daily[i].uvi + "</span>"
+    
+        weeklyData.appendChild(weekIcon);
+        weeklyData.appendChild(dateIcon);
+        weeklyData.appendChild(descIcon);
+        weeklyData.appendChild(tempIcon);
+        weeklyData.appendChild(humiidityIcon);
+        weeklyData.appendChild(windSpeedIcon);
+        weeklyData.appendChild(UVIcon);
+
+//UV Index color indicators
+//Low 1-2
+if (data.daily[i].uvi < 3) {
+    var indexLow = document.createElement("li");
+    indexLow.classList.add("low");
+    indexLow.innerHTML = "Low";
+    weeklyData.appendChild(indexLow);
+//Moderate 3-5
+    } else if (data.daily[i].uvi >= 3 && data.daily[i].uvi < 6) {
+    var indexModerate = document.createElement("li");
+    indexModerate.classList.add("moderate");
+    indexModerate.innerHTML = "Moderate";
+    weeklyData.appendChild(indexModerate);
+//High 6-7
+    } else if (data.daily[i].uvi >= 6 && data.daily[i].uvi < 8) {
+    var indexHigh = document.createElement("li");
+    indexHigh.classList.add("high");
+    indexHigh.innerHTML = "High";
+    weeklyData.appendChild(indexHigh);
+
+}
+
+function weatherForcast( cityID ) {
+    var APIkey = '2c7d322923b0c930f658c4c4684eebcf';
+    fetch('https://api.openweathermap.org/data/2.5/weather?id=' + cityID+ '&appid=' + APIkey)  
+    .then(function(resp) { return resp.json() }) // Convert data to json
+    .then(function(data) {
+      drawWeather(data); // Call drawWeather
+    })
+    .catch(function() {
+      // catch any errors
+    });
+  }
+  
+  window.onload = function() {
+    weatherForcast( 6167865 ); //update this after search query, lat lon
+  }
+  
+  function drawWeather( d ) {
+      var fahrenheit = Math.round(((parseFloat(d.main.temp)-273.15)*1.8)+32); 
+      var description = d.weather[0].description;
+      
+      document.getElementById('description').innerHTML = description;
+      document.getElementById('temp').innerHTML = fahrenheit + '&deg;';
+      document.getElementById('location').innerHTML = d.name;
+      document.getElementById('UVIndex').innerHTML = current.uvi;
+      document.getElementById('humidity').innerHTML = current.humidity;
+      
+      if( description.indexOf('rain') > 0 ) {
+        document.body.className = 'rainy';
+    } else if( description.indexOf('cloud') > 0 ) {
+        document.body.className = 'cloudy';
+    } else if( description.indexOf('sunny') > 0 ) {
+        document.body.className = 'sunny';
     }
+  }
