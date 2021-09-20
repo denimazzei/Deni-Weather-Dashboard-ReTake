@@ -19,23 +19,49 @@
         </header>
     </div>
 
+    <!--City Search Section -->
     <main class="is-flex">
-        <section class="field city-search">
+        <section class="field" id="city-search">
             <form class="city-form">
                 <input class="input" type="text" id="search" placeholder="Enter City Name">
                 <button class="button is-primary" type="search">Search</button>
+                <button class="button is-primary" id="clear" type="clear">Clear</button>
                 <div class="history"></div>
             </form>
             <div class="city-list"></div>
         </section>
-        <section class=”weather”>
-            <div class=”container”>
-              <div class=”forecast”>
-              </div>
-            </div>
-          </section>
-    </main>
 
-    <script src="Assets/JS/script.js"></script>
+        <!--Daily Forcast Display-->
+        <section class=”daily-forcast col-10”>
+            <div class="card mb-2">
+                <div class="forcast-body">
+                    <h4 class="card-title bg-light text-muted">
+                        <img class="weather-image"/>
+                        <span class="cityName"></span>
+                    </h4>
+                    <h5 class="card-subtitle mb-2 text-muted bg-white rounded">
+                        <span class="date"></span>
+                    </h5>
+                    <ul class="temperature card-text"></ul>
+                    <ul class="humidity card-text"></ul>
+                    <ul class="windSpeed card-text"></ul>
+                    <ul class="UVIndex card-text"></ul>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!--5-day Forcast Section -->
+    <section class="5dayForcast">
+        <div class="card day1"></div>
+        <div class="card day2"></div>
+        <div class="card day3"></div>
+        <div class="card day4"></div>
+        <div class="card day5"></div>
+    </section>
+
+    <script src="Assets/JS/script3.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script scr="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </body>
 </html>
