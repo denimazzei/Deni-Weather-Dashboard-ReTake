@@ -71,3 +71,5 @@ async function getCityWeather(lat, lon) {
     return data;
 }
 
+searchButton.on("click", search_and_save);
+clearButton.on("click", clear);
